@@ -3,8 +3,9 @@
 
 #include <array>
 
-#define GRID_SIZE_X 4
-#define GRID_SIZE_Y 4
+#define GRID_SIZE_X 7
+#define GRID_SIZE_Y 6
+#define MARKS_TO_WIN 4
 
 enum Players {
     neutral = '#', blue = 'b', red = 'r'
@@ -40,7 +41,6 @@ public:
 
 
     Players checkWin(Move lastMove);
-
 };
 
 

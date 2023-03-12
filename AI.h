@@ -5,24 +5,36 @@
 #include <map>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
+#include <SFML/Graphics.hpp>
 #include "GameLogic.h"
 
-#define AI_SEARCH_DEPTH 16
+#define AI_SEARCH_DEPTH 1
 
 
 struct EvalResult {
-	explicit EvalResult(float eval) : move(), eval(eval) {};
-	EvalResult(Move move, float eval) : move(move), eval(eval) {};
+    EvalResult() : move(), eval(-std::numeric_limits<float>::infinity()) {};
+    explicit EvalResult(float eval) : move(), eval(eval) {};
+    EvalResult(Move move, float eval) : move(move), eval(eval) {};
 
-	Move move;
-	float eval;
+    Move move;
+    float eval;
+
+    friend bool operator<(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval < rhs.eval; };
+    friend bool operator>(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval > rhs.eval; };
+    friend bool operator<=(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval <= rhs.eval; };
+    friend bool operator>=(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval >= rhs.eval; };
+    friend bool operator==(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval == rhs.eval; };
+    friend bool operator!=(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval != rhs.eval; }
 };
 
 struct DebugInfo {
     DebugInfo() : movesLookedAt(0), transpositionsUsed(0), transpositionsAdded(0), transpositionsOverridden(0) {};
+
     DebugInfo(int movesLookedAt, int transpositionsUsed, int transpositionsAdded, int transpositionsOverridden) :
-    movesLookedAt(movesLookedAt), transpositionsUsed(transpositionsUsed), transpositionsAdded(transpositionsAdded),
-    transpositionsOverridden(transpositionsOverridden) {};
+            movesLookedAt(movesLookedAt), transpositionsUsed(transpositionsUsed),
+            transpositionsAdded(transpositionsAdded),
+            transpositionsOverridden(transpositionsOverridden) {};
 
     int movesLookedAt = 0;
     int transpositionsUsed = 0;
@@ -36,7 +48,7 @@ struct DebugInfo {
         transpositionsOverridden = 0;
     }
 
-    void printInfo() {
+    void printInfo() const {
         std::cout << "TranspositionsAdded: " << transpositionsAdded << std::endl
                   << "TranspositionsUpdated: " << transpositionsOverridden << std::endl
                   << "TranspositionsUsed: " << transpositionsUsed << std::endl
@@ -45,27 +57,34 @@ struct DebugInfo {
 };
 
 
-class AI {
+class AI{
 public:
     AI() = default;
 
     GameLogic game;
+
+    void makeMove(int row);
+    void unmakeMove(int row);
+
     void update(GameLogic _game);
 
     float staticEval();
-	EvalResult search(int depth,
-		float alpha = -std::numeric_limits<float>::infinity(),
-		float beta = std::numeric_limits<float>::infinity());
+
+    EvalResult search(int depth,
+                      float alpha = -std::numeric_limits<float>::infinity(),
+                      float beta = std::numeric_limits<float>::infinity());
 
     DebugInfo debugInfo;
-	Move findBestMove();
+
+    Move findBestMove();
 
     std::vector<Move> getPossibleMoves();
+    void printBoard();
+
 
     std::vector<std::string> getTranspositions();
-    static std::map<std::string, std::pair<float, int>> transpositions;
 
-    void printBoard();
+    static std::map<std::string, std::pair<float, int>> transpositions;
 };
 
 

@@ -19,7 +19,7 @@ Players GameLogic::checkWin(Move lastMove) {
         row++;
         colum--;
     }
-    if (markCount >= 4)
+    if (markCount >= MARKS_TO_WIN)
         return lastMove.player;
 
     // check diagonal (top right to bottom left)
@@ -38,7 +38,7 @@ Players GameLogic::checkWin(Move lastMove) {
         row++;
         colum++;
     }
-    if (markCount >= 4)
+    if (markCount >= MARKS_TO_WIN)
         return lastMove.player;
 
     // check horizontal
@@ -55,7 +55,7 @@ Players GameLogic::checkWin(Move lastMove) {
         markCount++;
         row++;
     }
-    if (markCount >= 4)
+    if (markCount >= MARKS_TO_WIN)
         return lastMove.player;
 
     // check vertical
@@ -72,7 +72,7 @@ Players GameLogic::checkWin(Move lastMove) {
         markCount++;
         colum++;
     }
-    if (markCount >= 4)
+    if (markCount >= MARKS_TO_WIN)
         return lastMove.player;
 
     return Players::neutral;

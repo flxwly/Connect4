@@ -21,7 +21,9 @@ void GameWindow::update() {
             case sf::Event::MouseButtonPressed:
 
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (game.curPlayer == Players::blue) {
+                    if (game.winner != Players::neutral) {
+                        game.init();
+                    } else if (game.curPlayer == Players::blue) {
                         game.update((event.mouseButton.x - topLeft.x) / cellSize.x);
                     } else {
                         Move move = ai.findBestMove();
@@ -34,7 +36,6 @@ void GameWindow::update() {
 }
 
 void GameWindow::render() {
-
 
     clear(sf::Color::White);
 
