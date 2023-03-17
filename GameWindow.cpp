@@ -23,7 +23,7 @@ void GameWindow::update() {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     if (game.winner != Players::neutral) {
                         game.init();
-                    } else if (game.curPlayer == Players::blue) {
+                    } else if (game.curPlayer == Players::blue || false) {
                         game.update((event.mouseButton.x - topLeft.x) / cellSize.x);
                     } else {
                         Move move = ai.findBestMove();
@@ -86,10 +86,11 @@ void GameWindow::render() {
 
     // Draw winner text
     if (game.winner != Players::neutral) {
+        std::string winner = std::to_string((char) game.winner);
         sf::Text text;
         text.setFont(gameFont);
         text.setCharacterSize(50);
-        text.setString("Spieler " + std::to_string(game.winner) + " hat gewonnen!");
+        text.setString("Spieler " + winner + " hat gewonnen!");
         text.setOutlineColor(sf::Color::Black);
         text.setOutlineThickness(2);
         if ((frames / 5) % 2) {

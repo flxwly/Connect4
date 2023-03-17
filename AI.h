@@ -9,16 +9,16 @@
 #include <SFML/Graphics.hpp>
 #include "GameLogic.h"
 
-#define AI_SEARCH_DEPTH 1
+#define AI_SEARCH_DEPTH 8
 
 
 struct EvalResult {
-    EvalResult() : move(), eval(-std::numeric_limits<float>::infinity()) {};
-    explicit EvalResult(float eval) : move(), eval(eval) {};
+    EvalResult() : move(-1, Players::neutral), eval(-std::numeric_limits<float>::infinity()) {};
+    explicit EvalResult(float eval) : move(-1, Players::neutral), eval(eval) {};
     EvalResult(Move move, float eval) : move(move), eval(eval) {};
 
     Move move;
-    float eval;
+    float eval = NAN;
 
     friend bool operator<(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval < rhs.eval; };
     friend bool operator>(const EvalResult &lhs, const EvalResult &rhs) { return lhs.eval > rhs.eval; };

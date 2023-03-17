@@ -82,11 +82,11 @@ void GameLogic::update(int row) {
     if (row < 0 || row >= GRID_SIZE_X)
         return;
 
-    if (topSlots[row] < GRID_SIZE_Y) {
+    if (topSlots[row] + 1 < GRID_SIZE_Y) {
+        topSlots[row]++;
         grid[row][topSlots[row]] = curPlayer;
         winner = checkWin(Move(row, curPlayer));
         curPlayer = (curPlayer == Players::blue) ? Players::red : Players::blue;
-        topSlots[row]++;
     }
 }
 
@@ -94,7 +94,7 @@ void GameLogic::init() {
     curPlayer = Players::blue;
     winner = Players::neutral;
     for (int x = 0; x < GRID_SIZE_X; ++x) {
-        topSlots[x] = 0;
+        topSlots[x] = -1;
         for (int y = 0; y < GRID_SIZE_Y; ++y) {
             grid[x][y] = Players::neutral;
         }
